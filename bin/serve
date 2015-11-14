@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require_relative '../sys/builder'
+require_relative '../sys/server'
+require_relative '../config/server'
+
+Builder.build
+Server.serve
