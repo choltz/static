@@ -11,6 +11,6 @@ require_relative '../app/services/compose.rb'
 
 # load all services
 Dir['app/services/**/*.rb'].each do |path|
-  puts path
+  puts "Require '#{path}"
   require_relative "../#{path}"
 end

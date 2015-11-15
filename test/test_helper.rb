@@ -1,9 +1,10 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'minitest/autorun'
 require 'rubygems'
 require 'bundler/setup'
 
-require 'simplecov'
-SimpleCov.start
 
 Bundler.require(:default)
 require_relative '../config/application'
