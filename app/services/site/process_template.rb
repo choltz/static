@@ -24,7 +24,7 @@ Namespace.build('Services::Site::ProcessTemplate') do
   #   key added based on the constructor, symbol.
   def call(options = {})
     options.tap do |opts|
-      opts[@template.to_sym] = Slim::Template.new("#{@path}/#{@template}.slim").render(Object.new, data: opts)
+      opts[@template.to_sym] = Slim::Template.new("#{@path}/#{@template}.slim", disable_escape: true).render(Object.new, data: opts)
     end
   end
 end

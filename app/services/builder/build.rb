@@ -15,32 +15,11 @@ Namespace.build('Services::Builder::Build') do
     end
 
     # Generate site files
+    structure = (Services::Site::ProcessTemplate.new(:sidebar) |
+                 Services::Site::ProcessTemplate.new(:header)  |
+                 Services::Site::ProcessTemplate.new(:list)).call(options)
 
-    #  Services::Site::GenerateStructure |
-
-    structure_files = (Services::Site::ProcessTemplate.new(:sidebar) |
-                       Services::Site::ProcessTemplate.new(:header)  |
-                       Services::Site::ProcessTemplate.new(:list)).call(options)
-
-#     content = Slim::Template.new('app/views/sidebar.slim').render(Object.new, posts: posts)
-
-
-#debugger
-
-    #   sidedbar, header, footer
-    #   listing page
-    #   post pages - via application slim generation
-
-    # (Services::Site::GeneratePostPages |
-    #  Services::Site::GenerateStructure |
-    #  Services::Site::WriteFiles).call(posts: posts, data: options)
-
-    #layout
-    #sidebar
-
-    #main page - listing
-    #post page
-
+    Services::Site::ProcessTemplate.new(:list).call(options)
 
     options
   end

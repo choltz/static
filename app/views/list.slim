@@ -1,2 +1,6 @@
+div #{data[:header]}
 div
-  h2 buh
+  - data[:posts].each do |post|
+    img src="#{post.thumbnail}"
+    div #{post.title}
+div #{data[:sidebar]}
