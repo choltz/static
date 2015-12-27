@@ -1,4 +1,4 @@
-Namespace.build('Services::Site::ProcessTemplate') do
+Namespace.build('Services::Site::ProcessLayout') do
   include Services::Base
 
   # Public: Given a list of site files, process them through slim to get html
@@ -14,7 +14,10 @@ Namespace.build('Services::Site::ProcessTemplate') do
                              .gsub(/\..+/, '')  # remove the extension
                              .gsub(/^_/, '')    # remove the leading underscore
                              .to_sym
-      opts[key] = Slim::Template.new(opts[:item]).render(Object.new, options)
+
+      opts[key] = Slim::Template.new(opts[:item]).render(Object.new) do
+        opts[:yield]
+      end
     end
   end
 end
