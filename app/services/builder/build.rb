@@ -1,5 +1,3 @@
-require_relative '../base'
-
 Namespace.build('Services::Builder::Build') do
   include Services::Base
 
@@ -19,16 +17,12 @@ Namespace.build('Services::Builder::Build') do
     end
 
     # Generate template content for each template view file
-    non_layout_templates = Dir['app/views/*'].reject{ |path| path =~ /application\.slim/ }
-    data = Services::Each.new(non_layout_templates,
+    data = Services::Each.new(Dir['app/views/*.slim'],
                               Services::Site::ProcessTemplate).call data
 
     # Process index page
-    data[:item]    = 'app/views/application.slim'
-    data[:content] = data[:index]
-    data[:key]     = :index
-    data           = Services::Site::ProcessTemplate.call data
-
+    data = Services::Site::ProcessPage.call data
+debugger
     # process post pages
 
 
