@@ -19,16 +19,18 @@ Namespace.build('Services::Builder::Build') do
     end
 
     # Generate template content for each template view file
-    data = Services::Each.new(Dir['app/views/_*'],
+    non_layout_templates = Dir['app/views/*'].reject{ |path| path =~ /application\.slim/ }
+    data = Services::Each.new(non_layout_templates,
                               Services::Site::ProcessTemplate).call data
 
-    # Generate the index page
-    data[:item] = 'app/views/index.slim'
-    data        = Services::Site::ProcessTemplate.call data
+    # Process index page
+    data[:item]    = 'app/views/application.slim'
+    data[:content] = data[:index]
+    data[:key]     = :index
+    data           = Services::Site::ProcessTemplate.call data
 
-    data[:item]  = 'app/views/application.slim'
-    data[:yield] = data[:index]
-    data        = Services::Site::ProcessLayout.call data
+    # process post pages
+
 
     debugger
 

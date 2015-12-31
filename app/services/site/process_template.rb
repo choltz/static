@@ -10,7 +10,8 @@ Namespace.build('Services::Site::ProcessTemplate') do
   #          with the processed template as the key's value.
   def call(options = {})
     options.tap do |opts|
-      key       = opts[:item].gsub(/^.+\//, '') # extract the file name
+      key       = opts[:key] ||
+                  opts[:item].gsub(/^.+\//, '') # extract the file name
                              .gsub(/\..+/, '')  # remove the extension
                              .gsub(/^_/, '')    # remove the leading underscore
                              .to_sym
