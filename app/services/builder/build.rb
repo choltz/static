@@ -21,24 +21,14 @@ Namespace.build('Services::Builder::Build') do
                               Services::Site::ProcessTemplate).call data
 
     # Process index page
-    data = Services::Site::ProcessPage.call data
-debugger
-    # process post pages
+    data = Services::Site::ProcessStructurePage.call data
 
+    # process post pages
+    data = Services::Each.new(data[:posts],
+                              Services::Site::ProcessPostPage).call data
 
     debugger
 
-#    data[:file] = 'app/views/'
-#    data = Services::Site::ProcessTemplate.call data
-
-
-
-  # pages
-    # generate post list page
-    # generate post pages
-
-#    x=Dir['app/views/*'].reject{ |view| view =~ /application.slim/ }
-#    debugger
       # post list
       #
       # site map?

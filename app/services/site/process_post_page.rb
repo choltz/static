@@ -1,8 +1,7 @@
-Namespace.build('Services::Site::ProcessPage') do
+Namespace.build('Services::Site::ProcessPostPage') do
   include Services::Base
 
-  # Public: Given a layout template and content to inject into it, process into
-  # html.
+  # Public: Given a post object, process the content into a layout template
   #
   # options - parameter hash
   #   layout: symbol of the layout to process (default: :application)
@@ -13,15 +12,15 @@ Namespace.build('Services::Site::ProcessPage') do
   #   results: contains a string of the processed page
   def call(options = {})
     options = {
-      layout: :application,
-      page:   :index
+      layout:   :application
     }.update(options)
 
     options.tap do |opts|
+      opts[:key]     = opts[:item].file.gsub(/^.+\//, '').gsub(/\..+/, '').gsub('-', '_')
+      opts[:content] = opts[:item].html
       opts[:item]    = "app/views/layouts/#{opts[:layout]}.slim"
-      opts[:key]     = opts[:page]
-      opts[:content] = opts[opts[:key]]
-      Services::Site::ProcessTemplate.call opts
+
+      opts = Services::Site::ProcessTemplate.call opts
     end
   end
 end

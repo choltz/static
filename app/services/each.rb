@@ -17,11 +17,10 @@ Namespace.build('Services::Each') do
   #
   # Returns: parameter hash
   def call(options = {})
-    options.tap do |opts|
-      @enumerator.each do |item|
-        opts[:item] = item
-        @service.call(opts)
-      end
+    @enumerator.each do |item|
+      options[:item] = item
+      options = @service.call(options)
     end
+    options
   end
 end
