@@ -1,25 +1,11 @@
-Namespace.build('Services::Posts::ParseProperties') do
-  include Services::Base
+class Posts
+  include Methodology
 
-  # Public: Given a block of text with properties in the header, parse out the
-  # properties and return as a hash
-  #
-  # options - parameter hash
-  #   properties: text block with properties
-  #
-  # Example:
-  # text = "---
-  # layout: post
-  # title: " title "
-  # ---
-  # some content"
-  #
-  # Services::Posts::ParseProperties.call contents: text
-  # => { properties: { layout: post, title: 'title'} }
-  #
-  # Returns: parameter hash
-  #   properties - hash
-  def call(contents)
+  function(:open_file) do |file|
+    File.open(file).read
+  end
+
+  function(:parse_properties) do |contents|
     results = contents.split(/---\n/)[1] # extract properties block
                       .split(/\n/)       # split the properties by line
                       .map(&method(:split_by_key_and_value))
@@ -29,6 +15,15 @@ Namespace.build('Services::Posts::ParseProperties') do
     Hash[*results]
   end
 
+  function(:parse_markdown) do |contents|
+    renderer = Redcarpet::Render::HTML.new
+    parser   = Redcarpet::Markdown.new renderer
+    markdown = contents.gsub(/---.+?---/m, '')
+    parser.render markdown
+  end
+
+  private
+
   # Internal: split a string whose key and value are separated by a colon
   #
   # text - string to parse
@@ -37,7 +32,7 @@ Namespace.build('Services::Posts::ParseProperties') do
   # play nice with dates that contain times with colon delimiters
   #
   # Returns: a regex match
-  def split_by_key_and_value(text)
+  def self.split_by_key_and_value(text)
     text.match(/(^[^:]+):([^$]*)/)
   end
 
@@ -48,7 +43,7 @@ Namespace.build('Services::Posts::ParseProperties') do
   # match - regex match object that contains the key and value from a string
   #
   # Returns: Array of key and value with spaces and quotes stripped
-  def strip_quotes_and_space(match)
+  def self.strip_quotes_and_space(match)
     [match[1], match[2].strip.gsub(/^\"|\"$/, '')]
   end
 end

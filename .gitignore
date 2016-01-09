@@ -1,2 +1,3 @@
 site/*
 coverage/*
+.byebug_history

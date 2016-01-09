@@ -5,14 +5,11 @@ Namespace.build('Services::Posts::OpenFile') do
 
   # Public: Open the given file and write the contents to the :contents key
   #
-  # options - parameter hash
-  #   file: file path
+  # file - file path
   #
   # Returns: modified parameter hash
   #   contents: array of file contents
-  def call(options = {})
-    options.tap do |opts|
-      opts[:contents] = File.open(opts[:file]).read
-    end
+  def call(file)
+    File.open(file).read
   end
 end
